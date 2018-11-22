@@ -131,11 +131,13 @@ fun solveProblem() {
 
         generation = generation.sortedBy { it.conflict.second }
 
-        if (!generation[0].conflict.first) {
+        val bestNode = generation[0]
+        if (!bestNode.conflict.first) {
             print("Solved on ${generationCounter}th generation\n")
             print("Best is ")
-            generation[0].list.print()
-            print(" With ${generation[0].conflict.second} Conflicts\n")
+            bestNode.list.print()
+            print(" With ${bestNode.conflict.second} Conflicts\n")
+            bestNode.printBoardStyle()
             return
         } else {
             val sumConflicts = generation.sumBy { it.conflict.second }
@@ -175,7 +177,6 @@ fun solveProblem() {
         generation = newGeneration
 
         generationCounter++
-        Thread.sleep(100)
     }
 
 }
@@ -185,5 +186,18 @@ fun List<Node>.conflictsCount() {
 }
 
 fun makeRandomNode() = Node(List(8) { Math.abs(Random().nextInt() % 8) })
+
+fun Node.printBoardStyle() {
+    for (i in 0..7) {
+        for (j in 0..7) {
+            if (i == list[j]) {
+                print("  Q  ")
+            } else {
+                print("  -  ")
+            }
+        }
+        print('\n')
+    }
+}
 
 data class Node(val list : List<Int>, val conflict : Pair<Boolean, Int> = hasConflict(list))
