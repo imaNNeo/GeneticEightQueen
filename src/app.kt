@@ -120,6 +120,8 @@ fun hasConflict(positions: List<Int>): Pair<Boolean, Int> {
 
 fun solveProblem() {
 
+    val startTime = System.currentTimeMillis()
+
     val firstGeneration = List(100) { makeRandomNode() }
 
     var generation: List<Node> = firstGeneration
@@ -133,7 +135,9 @@ fun solveProblem() {
 
         val bestNode = generation[0]
         if (!bestNode.conflict.first) {
-            print("Solved on ${generationCounter}th generation\n")
+            val endTime = System.currentTimeMillis()
+            val duration = endTime - startTime
+            print("Solved on ${generationCounter}th generation : $duration ms)\n")
             print("Best is ")
             bestNode.list.print()
             print(" With ${bestNode.conflict.second} Conflicts\n")
