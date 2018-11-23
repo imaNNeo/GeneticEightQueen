@@ -5,6 +5,8 @@ import java.util.*
  * iman.neofight@gmail.com
  */
 
+
+const val SIZE = 8
 fun main(args: Array<String>) {
     solveProblem()
 }
@@ -16,7 +18,7 @@ fun <K> List<K>.print() {
 }
 
 fun hasConflict(positions: List<Int>): Pair<Boolean, Int> {
-    if (positions.size != 8) throw RuntimeException()
+    if (positions.size != SIZE) throw RuntimeException()
 
     positions.forEach { pos ->
         if (pos < 0 || pos > 7) RuntimeException()
@@ -162,7 +164,7 @@ fun solveProblem() {
                     firstList.addAll(leftSide)
                     firstList.addAll(rightSide)
                     if (needToMutation) {
-                        firstList[Math.abs(Random().nextInt() % 8)] = Math.abs(Random().nextInt() % 8)
+                        firstList.swap(Math.abs(Random().nextInt() % firstList.size), Math.abs(Random().nextInt() % firstList.size))
                     }
                     val firstChild = Node(firstList)
                     newGeneration.add(firstChild)
@@ -171,7 +173,7 @@ fun solveProblem() {
                     secondList.addAll(rightSide)
                     secondList.addAll(leftSide)
                     if (needToMutation) {
-                        secondList[Math.abs(Random().nextInt() % 8)] = Math.abs(Random().nextInt() % 8)
+                        secondList.swap(Math.abs(Random().nextInt() % firstList.size), Math.abs(Random().nextInt() % firstList.size))
                     }
                     val secondChild = Node(secondList)
                     newGeneration.add(secondChild)
@@ -188,12 +190,17 @@ fun solveProblem() {
 fun List<Node>.conflictsCount() {
     this.sumBy { it.conflict.second }
 }
+fun <A> MutableList<A>.swap(index1 : Int, index2 : Int) {
+    val tmp = this[index1]
+    this[index1] = this[index2]
+    this[index2] = tmp
+}
 
-fun makeRandomNode() = Node(List(8) { Math.abs(Random().nextInt() % 8) })
+fun makeRandomNode() = Node(List(SIZE) { it }.shuffled())
 
 fun Node.printBoardStyle() {
-    for (i in 0..7) {
-        for (j in 0..7) {
+    for (i in 0 until SIZE) {
+        for (j in 0 until SIZE) {
             if (i == list[j]) {
                 print("  Q  ")
             } else {
