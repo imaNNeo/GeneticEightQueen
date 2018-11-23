@@ -6,7 +6,7 @@ import java.util.*
  */
 
 
-const val SIZE = 8
+const val SIZE = 16
 fun main(args: Array<String>) {
     solveProblem()
 }
